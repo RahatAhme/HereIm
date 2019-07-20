@@ -3,47 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingHorizontal="40dp"
-    tools:context=".ChildEmergency_Callig">
+    android:paddingHorizontal="50dp"
+    tools:context=".Child_Message">
 
     <Button
-        android:id="@+id/callToPolice_id"
+        android:id="@+id/mgsToPrent_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Call To Police"
-        android:layout_marginVertical="30dp"
+        android:text="Message to Parent"
+        android:layout_marginVertical="35dp"
         android:textColor="#FF5722"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAllCaps="false"
+        android:paddingVertical="20dp"
         android:layout_centerInParent="true"
         android:background="#6FFFEB3B"
         />
+
     <Button
-        android:id="@+id/callToParent_id"
+        android:id="@+id/mgsToPolice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Call To Parent"
+        android:text="Message to Police"
+        android:paddingVertical="20dp"
         android:textColor="#FF5722"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAllCaps="false"
         android:layout_centerInParent="true"
-        android:layout_above="@id/callToPolice_id"
+        android:layout_above="@id/mgsToPrent_id"
         android:background="#6FFFEB3B"
         />
+
     <Button
         android:id="@+id/callToHelpLine_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Call To 999"
+        android:text="Message To Both"
         android:textColor="#FF5722"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:paddingVertical="20dp"
         android:textAllCaps="false"
         android:layout_centerInParent="true"
-        android:layout_below="@id/callToPolice_id"
+        android:layout_below="@id/mgsToPrent_id"
         android:background="#6FFFEB3B"
         />
 

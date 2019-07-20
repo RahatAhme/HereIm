@@ -25,7 +25,10 @@ public class Parent_Sos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_parent__sos, container, false);
+        View view =  inflater.inflate(R.layout.fragment_parent__sos, container, false);
+        ((ParentActivity) getActivity())
+                .setTitle("SOS");
+        return view;
     }
 
 }

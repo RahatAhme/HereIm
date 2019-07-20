@@ -1,8 +1,6 @@
 package com.soft_sketch.hereim;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,18 +8,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChildEmergency_Callig extends Fragment {
+public class Child_Message extends Fragment {
 
-    public ChildEmergency_Callig() {
+
+    public Child_Message() {
         // Required empty public constructor
     }
 
@@ -30,9 +25,9 @@ public class ChildEmergency_Callig extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_child_emergency__callig, container, false);
+        View view =  inflater.inflate(R.layout.fragment_child__message, container, false);
         ((ChildActivity) getActivity())
-                .setTitle("Emergency Calling");
+                .setTitle("Message");
         return view;
     }
 

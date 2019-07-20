@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ParentActivity extends AppCompatActivity
@@ -40,7 +41,6 @@ public class ParentActivity extends AppCompatActivity
 
     private String parentID = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +50,16 @@ public class ParentActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.ParentUID);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        authOperation = new FirebaseAuthOperation(this);
+        dataBase = new FirebaseDataBase();
 
         //first fragment setup
         manager = getSupportFragmentManager();
@@ -83,28 +88,36 @@ public class ParentActivity extends AppCompatActivity
                         selectedFragment = new Parent_Sos();
                         menuItem.getIcon().setBounds(20, 20, 20, 20);
                         break;
+                    case R.id.nav_sound:
+                        selectedFragment = new AroundSound();
+                        menuItem.getIcon().setBounds(20, 20, 20, 20);
+                        break;
                 }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.FragmentHolder_2_id,
-                        selectedFragment).commit();
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.replace(R.id.FragmentHolder_2_id,selectedFragment);
+                ft.addToBackStack(null);
+                ft.commit();
                 return true;
             }
         });
 
         if (getIntent().getStringExtra("data").equals("perform")) {
-            authOperation = new FirebaseAuthOperation(this);
-            dataBase = new FirebaseDataBase();
 
             preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
             String parentName = preferences.getString("ParentName", "Error");
             String parentPhone = preferences.getString("ParentPhone", "Error");
             parentID = authOperation.GetToken();
 
+            navUsername.setText(parentID);
+
             if (dataBase.SaveParent(parentID, parentName, parentPhone)) {
                 Toast.makeText(this, "Your providing data has saved", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Something is going wrong.\nPlease check you network setting.", Toast.LENGTH_SHORT).show();
             }
+        }else {
+            Toast.makeText(this, "noting", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -132,7 +145,8 @@ public class ParentActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.logOut_id) {
+            authOperation.LogOut();
             return true;
         }
 

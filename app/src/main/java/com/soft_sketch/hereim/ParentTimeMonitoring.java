@@ -26,6 +26,8 @@ public class ParentTimeMonitoring extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_parent_time_monitoring, container, false);
+        ((ParentActivity) getActivity())
+                .setTitle("Social Media Time");
         return view;
     }
 

@@ -7,4 +7,18 @@
     android:id="@+id/FragmentHolder_3_id"
     tools:context=".ChildActivity">
 
+    <FrameLayout
+        android:id="@+id/FragmentHolder_2_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/child_bottom_navigation_id"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/child_menu"
+        android:id="@+id/child_bottom_navigation_id"
+        />
+
 </RelativeLayout>

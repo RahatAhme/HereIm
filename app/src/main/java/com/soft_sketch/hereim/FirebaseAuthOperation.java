@@ -103,7 +103,7 @@ public class FirebaseAuthOperation {
                                 Intent intent = new Intent(context, ParentActivity.class);
                                 intent.putExtra("data","perform");
                                 context.startActivity(intent);
-                                ((MainActivity)context).fileList();
+                                ((MainActivity)context).finish();
                             }else if (user.equals("Child")){
                                 editor.putString("ChildName",username);
                                 editor.putString("ChildPhone",userphone);
@@ -113,7 +113,7 @@ public class FirebaseAuthOperation {
                                 Intent intent = new Intent(context, ChildActivity.class);
                                 intent.putExtra("data","perform");
                                 context.startActivity(intent);
-                                ((MainActivity)context).fileList();
+                                ((MainActivity)context).finish();
                             }
                         }
                     }
@@ -159,5 +159,9 @@ public class FirebaseAuthOperation {
         username = childName;
         userphone = childPhone;
         parentToken = parentID;
+    }
+
+    public void LogOut(){
+        auth.signOut();
     }
 }

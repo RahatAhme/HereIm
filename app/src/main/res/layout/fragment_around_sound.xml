@@ -3,47 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingHorizontal="40dp"
-    tools:context=".ChildEmergency_Callig">
+    tools:context=".AroundSound">
 
     <Button
-        android:id="@+id/callToPolice_id"
+        android:id="@+id/recordSoundBtn_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Call To Police"
-        android:layout_marginVertical="30dp"
+        android:text="Start Recording"
+        android:layout_marginVertical="35dp"
         android:textColor="#FF5722"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAllCaps="false"
+        android:paddingVertical="20dp"
         android:layout_centerInParent="true"
         android:background="#6FFFEB3B"
         />
     <Button
-        android:id="@+id/callToParent_id"
+        android:id="@+id/playSoundBtn_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Call To Parent"
+        android:text="Play Recording"
+        android:layout_marginVertical="35dp"
         android:textColor="#FF5722"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAllCaps="false"
+        android:paddingVertical="20dp"
         android:layout_centerInParent="true"
-        android:layout_above="@id/callToPolice_id"
-        android:background="#6FFFEB3B"
-        />
-    <Button
-        android:id="@+id/callToHelpLine_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Call To 999"
-        android:textColor="#FF5722"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/callToPolice_id"
+        android:layout_below="@id/recordSoundBtn_id"
         android:background="#6FFFEB3B"
         />
 
