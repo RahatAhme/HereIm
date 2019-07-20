@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Child_Login_fragment">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <ImageView
+           android:id="@+id/logo_imageview_id"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="92dp"
+           android:src="@drawable/no_net" />
+
+       <TextView
+           android:id="@+id/childlog_title_id"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/logo_imageview_id"
+           android:textSize="25sp"
+           android:textStyle="bold"
+           android:textColor="@color/colorAccent"
+           android:layout_marginTop="50dp"
+           android:layout_centerHorizontal="true"
+           android:text="@string/child_log_title"/>
+
+       <EditText
+           android:id="@+id/child_name_ET_id"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/childlog_title_id"
+           android:layout_marginTop="50dp"
+           android:layout_marginLeft="32dp"
+           android:layout_marginRight="32dp"
+           android:hint="@string/child_name"
+           android:inputType="text"
+           android:textAlignment="center"/>
+
+       <EditText
+           android:id="@+id/child_phone_ET_id"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/child_name_ET_id"
+           android:layout_marginTop="30dp"
+           android:layout_marginLeft="32dp"
+           android:layout_marginRight="32dp"
+           android:hint="@string/childphone"
+           android:inputType="phone"
+           android:textAlignment="center"/>
+
+       <EditText
+           android:id="@+id/parentUserID_ET_id"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/child_phone_ET_id"
+           android:layout_marginTop="30dp"
+           android:layout_marginLeft="32dp"
+           android:layout_marginRight="32dp"
+           android:hint="@string/parent_user_id"
+           android:inputType="textPassword"
+           android:textAlignment="center"/>
+
+       <Button
+           android:id="@+id/child_log_btn_id"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/parentUserID_ET_id"
+           android:layout_centerHorizontal="true"
+           android:layout_marginHorizontal="64dp"
+           android:layout_marginTop="40dp"
+           android:background="@color/colorPrimary"
+           android:text="@string/log_in"
+           android:textColor="#ffff"
+           android:textStyle="bold"
+           android:textAllCaps="false"
+           android:textSize="25sp"
+           />
+   </RelativeLayout>
+</ScrollView>

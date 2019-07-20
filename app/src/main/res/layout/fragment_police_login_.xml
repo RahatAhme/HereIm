@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Police_login_Fragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/logo_imageview_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="92dp"
+            android:src="@drawable/no_net" />
+
+        <TextView
+            android:id="@+id/stationLogTitle_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_imageview_id"
+            android:textSize="25sp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/pstitle"/>
+
+        <EditText
+            android:id="@+id/station_name_ET_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stationLogTitle_id"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:hint="@string/psname"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:id="@+id/station_phone_ET_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/station_name_ET_id"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:hint="@string/psPhone"
+            android:textAlignment="center"/>
+
+
+        <Button
+            android:id="@+id/station_log_btn_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/station_phone_ET_id"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/log_in"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            />
+    </RelativeLayout>
+
+</ScrollView>

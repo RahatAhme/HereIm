@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Parent_Login_fragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/logo_imageview_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="92dp"
+            android:src="@drawable/no_net" />
+
+        <TextView
+            android:id="@+id/parentLogTitle_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_imageview_id"
+            android:textSize="25sp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/parent_log_title"/>
+
+        <EditText
+            android:id="@+id/parent_name_ET_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/parentLogTitle_id"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:hint="@string/parent_name"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:id="@+id/parent_phone_ET_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/parent_name_ET_id"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:hint="@string/parent_number"
+            android:inputType="phone"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/demo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@id/parent_log_btn_id"
+            />
+        <Button
+            android:id="@+id/parent_log_btn_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/parent_phone_ET_id"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/log_in"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            />
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "456181197893",
+    "firebase_url": "https://hereim-78d4b.firebaseio.com",
+    "project_id": "hereim-78d4b",
+    "storage_bucket": "hereim-78d4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456181197893:android:a52ef78dd38c7355",
+        "android_client_info": {
+          "package_name": "com.soft_sketch.hereim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456181197893-9lpqhj2mgsktblj7mp6j72aonun5n09m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soft_sketch.hereim",
+            "certificate_hash": "cadd71d1b602cfb8aa09ba8bd31a037b2779b2d4"
+          }
+        },
+        {
+          "client_id": "456181197893-t6so2a7btghf76j4695tf6p7ror8mc5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7YZ95nAJZQjmkBsTAY38XSed6Xzx-ZlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456181197893-t6so2a7btghf76j4695tf6p7ror8mc5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
