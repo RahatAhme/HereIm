@@ -39,7 +39,7 @@ public class ParentActivity extends AppCompatActivity
     private FirebaseAuthOperation authOperation;
     private FirebaseDataBase dataBase;
 
-    private String parentID = null;
+    public String parentID = "" + 3300509;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class ParentActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         authOperation = new FirebaseAuthOperation(this);
-        dataBase = new FirebaseDataBase();
+        dataBase = new FirebaseDataBase(this);
 
         //first fragment setup
         manager = getSupportFragmentManager();
@@ -95,19 +95,21 @@ public class ParentActivity extends AppCompatActivity
                 }
 
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.FragmentHolder_2_id,selectedFragment);
+                ft.replace(R.id.FragmentHolder_2_id, selectedFragment);
                 ft.addToBackStack(null);
                 ft.commit();
                 return true;
             }
         });
 
-        if (getIntent().getStringExtra("data").equals("perform")) {
+        String temp1 = getIntent().getStringExtra("data");
+
+        if (temp1 != null && temp1.equals("perform")) {
 
             preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
             String parentName = preferences.getString("ParentName", "Error");
             String parentPhone = preferences.getString("ParentPhone", "Error");
-            parentID = authOperation.GetToken();
+            parentID = authOperation.GetToken() + "";
 
             navUsername.setText(parentID);
 
@@ -116,7 +118,7 @@ public class ParentActivity extends AppCompatActivity
             } else {
                 Toast.makeText(this, "Something is going wrong.\nPlease check you network setting.", Toast.LENGTH_SHORT).show();
             }
-        }else {
+        } else {
             Toast.makeText(this, "noting", Toast.LENGTH_SHORT).show();
         }
     }

@@ -22,7 +22,7 @@
         />
 
     <Button
-        android:id="@+id/mgsToPolice"
+        android:id="@+id/mgsToPolice_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Message to Police"
@@ -37,7 +37,7 @@
         />
 
     <Button
-        android:id="@+id/callToHelpLine_id"
+        android:id="@+id/mgsToBoth_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Message To Both"

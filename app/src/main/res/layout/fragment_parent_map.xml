@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ParentMap">
 
-    <!-- TODO: Update blank fragment layout -->
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="nest fragment"
-      android:id="@+id/nextid"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tempID"/>
 
 </FrameLayout>

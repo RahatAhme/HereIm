@@ -23,6 +23,8 @@ public class ChildActivity extends AppCompatActivity {
     private FirebaseDataBase dataBase;
     private SharedPreferences preferences;
 
+    public String childID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class ChildActivity extends AppCompatActivity {
                 }
 
                 FragmentTransaction ft = manager.beginTransaction();
-                ft.replace(R.id.FragmentHolder_3_id,selectedFragment);
+                ft.replace(R.id.FragmentHolder_3_id, selectedFragment);
                 ft.addToBackStack(null);
                 ft.commit();
 
@@ -65,21 +67,22 @@ public class ChildActivity extends AppCompatActivity {
             }
         });
 
+        String temp1 = getIntent().getStringExtra("data");
 
-        if (getIntent().getStringExtra("data").equals("perform")) {
+        if (temp1 != null && temp1.equals("perform")) {
             authOperation = new FirebaseAuthOperation(this);
-            dataBase = new FirebaseDataBase();
+            dataBase = new FirebaseDataBase(this);
 
             preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
             String childName = preferences.getString("ChildName", "Error");
             String childPhone = preferences.getString("ChildPhone", "Error");
-            String temp = preferences.getString("ParentID","Error");
-            String childID = authOperation.GetToken();
+            String temp = preferences.getString("ParentID", "Error");
+            childID = authOperation.GetToken();
             DatabaseReference parentID = FirebaseDatabase.getInstance().getReference(temp);
 
-            if(dataBase.ChildSave(childID,childName,childPhone,parentID)){
+            if (dataBase.ChildSave(childID, childName, childPhone, parentID)) {
                 Toast.makeText(this, "Your data is save successfully", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 Toast.makeText(this, "Don't save data", Toast.LENGTH_SHORT).show();
             }
         }
