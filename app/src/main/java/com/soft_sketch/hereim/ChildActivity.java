@@ -20,15 +20,26 @@ public class ChildActivity extends AppCompatActivity {
 
     private FragmentManager manager;
     private FirebaseAuthOperation authOperation;
-    private FirebaseDataBase dataBase;
+    private FirebaseDataBase db;
     private SharedPreferences preferences;
+    private Bundle bundle;
+    private DatabaseReference scoresRef;
 
     public String childID;
+    public String phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
+
+        authOperation = new FirebaseAuthOperation(this);
+        db = new FirebaseDataBase(this);
+
+        childID = authOperation.GetToken();
+
+        scoresRef = FirebaseDatabase.getInstance().getReference(db.GetParentID(childID));
+        scoresRef.keepSynced(true);
 
         manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
@@ -36,26 +47,38 @@ public class ChildActivity extends AppCompatActivity {
         ft.add(R.id.FragmentHolder_3_id, child_current_loc);
         ft.commit();
 
+        phone = db.GetParentPhone(childID);
+
         BottomNavigationView bottomNav = findViewById(R.id.child_bottom_navigation_id);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment selectedFragment = new ChildEmergency_Callig();
 
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_loc:
-                        selectedFragment = new Child_Current_Loc();
-                        menuItem.getIcon().setBounds(20, 20, 20, 20);
-                        break;
-                    case R.id.nav_calling:
-                        selectedFragment = new ChildEmergency_Callig();
-                        menuItem.getIcon().setBounds(20, 20, 20, 20);
-                        break;
-                    case R.id.nav_message:
-                        selectedFragment = new Child_Message();
-                        menuItem.getIcon().setBounds(20, 20, 20, 20);
-                        break;
+                try {
+                    bundle = new Bundle();
+                    switch (menuItem.getItemId()) {
 
+                        case R.id.nav_loc:
+                            selectedFragment = new Child_Current_Loc();
+                            menuItem.getIcon().setBounds(20, 20, 20, 20);
+                            break;
+                        case R.id.nav_calling:
+                            selectedFragment = new ChildEmergency_Callig();
+                            bundle.putString("phone", phone);
+                            selectedFragment.setArguments(bundle);
+                            menuItem.getIcon().setBounds(20, 20, 20, 20);
+                            break;
+                        case R.id.nav_message:
+                            selectedFragment = new Child_Message();
+                            bundle.putString("phone", phone);
+                            selectedFragment.setArguments(bundle);
+                            menuItem.getIcon().setBounds(20, 20, 20, 20);
+                            break;
+
+                    }
+                } catch (Exception ex) {
+                    Toast.makeText(ChildActivity.this, ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 FragmentTransaction ft = manager.beginTransaction();
@@ -70,22 +93,18 @@ public class ChildActivity extends AppCompatActivity {
         String temp1 = getIntent().getStringExtra("data");
 
         if (temp1 != null && temp1.equals("perform")) {
-            authOperation = new FirebaseAuthOperation(this);
-            dataBase = new FirebaseDataBase(this);
 
             preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
             String childName = preferences.getString("ChildName", "Error");
             String childPhone = preferences.getString("ChildPhone", "Error");
             String temp = preferences.getString("ParentID", "Error");
-            childID = authOperation.GetToken();
             DatabaseReference parentID = FirebaseDatabase.getInstance().getReference(temp);
 
-            if (dataBase.ChildSave(childID, childName, childPhone, parentID)) {
+            if (db.ChildSave(childID, childName, childPhone, parentID)) {
                 Toast.makeText(this, "Your data is save successfully", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Don't save data", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 }

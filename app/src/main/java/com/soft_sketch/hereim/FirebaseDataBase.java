@@ -1,6 +1,7 @@
 package com.soft_sketch.hereim;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.soft_sketch.hereim.POJO.ParentInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseDataBase {
 
@@ -26,10 +28,9 @@ public class FirebaseDataBase {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference rootRef = database.getReference();
 
-    private List<ChildInfo> childList = new ArrayList<>();
     private List<String> childIDList = new ArrayList<>();
-
-    private String parentNumber;
+    private String number;
+    private String id;
 
     private Context context;
 
@@ -49,11 +50,12 @@ public class FirebaseDataBase {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("DATA_ENTRY", e.getLocalizedMessage());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    Log.e("DATA_ENTRY", Objects.requireNonNull(e.getLocalizedMessage()));
+                }
             }
         });
         return dataSavingStatus;
-
     }
 
     public boolean ChildSave(String childID, String childName, String childNumber, DatabaseReference parentID) {
@@ -88,44 +90,54 @@ public class FirebaseDataBase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String temp = ds.getKey();
+                    assert temp != null;
                     if (!temp.equals("parentID") && !temp.equals("parentName") && !temp.equals("parentNumber")) {
                         Log.e("child", temp);
                     }
-
                 }
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         };
         parent.addListenerForSingleValueEvent(valueEventListener);
         return childIDList;
     }
 
-    public String GetParentPhone(String childID) {
-
-        rootRef.orderByChild("childID").equalTo(childID).addListenerForSingleValueEvent(new ValueEventListener() {
+    public String GetParentPhone(String childID){
+        rootRef.equalTo(childID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String keys = childSnapshot.getKey();
-                    String temp = childSnapshot.getValue(ParentInfo.class).getParentNumber();
-                    if (temp != null) {
-                        parentNumber = temp;
-                    } else {
-                        parentNumber = "empty";
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        number = Objects.requireNonNull(snapshot.getValue(ParentInfo.class)).getParentNumber();
                     }
-                    Log.e("number",parentNumber);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context, "Somethis is going wrong.\nPlease check your network.", Toast.LENGTH_SHORT).show();
+                Log.e("Number",databaseError.getMessage());
             }
         });
-        return parentNumber;
-
+        return number;
     }
+    public String GetParentID(String childID){
+
+        rootRef.equalTo(childID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                         id  = Objects.requireNonNull(snapshot.getValue(ParentInfo.class)).getParentID();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Number",databaseError.getMessage());
+            }
+        });
+        return id;
+    }
+
 }
