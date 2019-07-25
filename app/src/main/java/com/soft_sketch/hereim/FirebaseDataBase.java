@@ -1,6 +1,8 @@
 package com.soft_sketch.hereim;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,7 +21,9 @@ import com.soft_sketch.hereim.POJO.ChildInfo;
 import com.soft_sketch.hereim.POJO.ParentInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class FirebaseDataBase {
@@ -29,8 +33,7 @@ public class FirebaseDataBase {
     private DatabaseReference rootRef = database.getReference();
 
     private List<String> childIDList = new ArrayList<>();
-    private String number;
-    private String id;
+    private String phone;
 
     private Context context;
 
@@ -96,6 +99,7 @@ public class FirebaseDataBase {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -104,40 +108,39 @@ public class FirebaseDataBase {
         return childIDList;
     }
 
-    public String GetParentPhone(String childID){
-        rootRef.equalTo(childID).addListenerForSingleValueEvent(new ValueEventListener() {
+    public String GetParentNumber(String parentId) {
+
+        rootRef.child(parentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        number = Objects.requireNonNull(snapshot.getValue(ParentInfo.class)).getParentNumber();
-                    }
-                }
+               phone = dataSnapshot.getValue(ParentInfo.class).getParentNumber();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Number",databaseError.getMessage());
+
             }
         });
-        return number;
+        return phone;
     }
-    public String GetParentID(String childID){
 
-        rootRef.equalTo(childID).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void UpdateVibrate(String id) {
+
+        DatabaseReference childSOSRef = rootRef.child(id).child("5257f44");
+        Map<String, Object> sosupdate = new HashMap<>();
+        sosupdate.put("vibrationCode", true);
+
+        childSOSRef.updateChildren(sosupdate).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                         id  = Objects.requireNonNull(snapshot.getValue(ParentInfo.class)).getParentID();
-                    }
-                }
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
             }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Number",databaseError.getMessage());
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        return id;
-    }
 
+    }
 }

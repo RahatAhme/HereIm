@@ -29,7 +29,9 @@ import java.util.Objects;
 public class ChildEmergency_Callig extends Fragment {
     private Button parentCallBtn, policeCallBtn, helplineCallBtn;
 
-    private String phone = "";
+    private FirebaseDataBase dataBase;
+
+    private  String id = "";
 
     public ChildEmergency_Callig() {
         // Required empty public constructor
@@ -42,13 +44,15 @@ public class ChildEmergency_Callig extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_child_emergency__callig, container, false);
 
+        id = getArguments().getString("idForCall");
+
+        Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ((ChildActivity) Objects.requireNonNull(getActivity())).setTitle("Emergency Calling");
         }
 
-        if (getArguments() != null) {
-            phone = getArguments().getString("phone");
-        }
+        dataBase = new FirebaseDataBase(getContext());
 
         parentCallBtn = view.findViewById(R.id.callToParent_id);
         policeCallBtn = view.findViewById(R.id.callToPolice_id);
@@ -57,7 +61,7 @@ public class ChildEmergency_Callig extends Fragment {
         parentCallBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+ phone));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + dataBase.GetParentNumber(id)));
                 startActivity(intent);
             }
         });

@@ -26,7 +26,9 @@ public class Child_Message extends Fragment {
 
     private Button parentMgsBtn, policeMgsBtn, parentpoliceMgsBtn;
     private Context context;
-    private String phone;
+    private FirebaseDataBase dataBase;
+
+    private String id = "";
 
     public Child_Message() {
         // Required empty public constructor
@@ -41,9 +43,12 @@ public class Child_Message extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         View view = inflater.inflate(R.layout.fragment_child__message, container, false);
         ((ChildActivity) getActivity()).setTitle("Message");
+
+        dataBase = new FirebaseDataBase(getContext());
+
+        id = getArguments().getString("idForMgs");
 
         parentMgsBtn = view.findViewById(R.id.mgsToPrent_id);
         policeMgsBtn = view.findViewById(R.id.mgsToPolice_id);
@@ -55,7 +60,7 @@ public class Child_Message extends Fragment {
 
                 try {
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(getArguments().getString("phone"), null, "this is the mgs", null, null);
+                    smsManager.sendTextMessage(dataBase.GetParentNumber(id), null, "this is the mgs", null, null);
                     Toast.makeText(getContext(), "Your Message Sent",
                             Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {

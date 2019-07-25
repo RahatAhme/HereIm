@@ -36,10 +36,12 @@ public class ParentActivity extends AppCompatActivity
 
     private FragmentManager manager;
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private FirebaseAuthOperation authOperation;
     private FirebaseDataBase dataBase;
+    private Bundle bundle;
 
-    public String parentID = "" + 3300509;
+    public String parentID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class ParentActivity extends AppCompatActivity
 
         authOperation = new FirebaseAuthOperation(this);
         dataBase = new FirebaseDataBase(this);
+        bundle = new Bundle();
+        editor = preferences.edit();
 
         //first fragment setup
         manager = getSupportFragmentManager();
@@ -76,6 +80,7 @@ public class ParentActivity extends AppCompatActivity
                 Fragment selectedFragment = new ParentMap();
 
                 switch (menuItem.getItemId()) {
+
                     case R.id.nav_loc:
                         selectedFragment = new ParentMap();
                         menuItem.getIcon().setBounds(20, 20, 20, 20);
@@ -85,6 +90,8 @@ public class ParentActivity extends AppCompatActivity
                         menuItem.getIcon().setBounds(20, 20, 20, 20);
                         break;
                     case R.id.nav_sos:
+                        bundle.putString("parentIDpasser",preferences.getString("parentID","Error"));
+                        selectedFragment.setArguments(bundle);
                         selectedFragment = new Parent_Sos();
                         menuItem.getIcon().setBounds(20, 20, 20, 20);
                         break;
@@ -118,6 +125,10 @@ public class ParentActivity extends AppCompatActivity
             } else {
                 Toast.makeText(this, "Something is going wrong.\nPlease check you network setting.", Toast.LENGTH_SHORT).show();
             }
+
+            editor.putString("parentID",parentID);
+            editor.apply();
+
         } else {
             Toast.makeText(this, "noting", Toast.LENGTH_SHORT).show();
         }
