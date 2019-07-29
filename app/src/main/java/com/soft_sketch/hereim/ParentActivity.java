@@ -63,6 +63,8 @@ public class ParentActivity extends AppCompatActivity
         authOperation = new FirebaseAuthOperation(this);
         dataBase = new FirebaseDataBase(this);
         bundle = new Bundle();
+
+        preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         editor = preferences.edit();
 
         //first fragment setup
@@ -113,7 +115,7 @@ public class ParentActivity extends AppCompatActivity
 
         if (temp1 != null && temp1.equals("perform")) {
 
-            preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
             String parentName = preferences.getString("ParentName", "Error");
             String parentPhone = preferences.getString("ParentPhone", "Error");
             parentID = authOperation.GetToken() + "";

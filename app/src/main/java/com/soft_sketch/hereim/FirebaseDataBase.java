@@ -33,6 +33,7 @@ public class FirebaseDataBase {
     private DatabaseReference rootRef = database.getReference();
 
     private List<String> childIDList = new ArrayList<>();
+    private List<ChildInfo> childInfoList = new ArrayList<>();
     private String phone;
 
     private Context context;
@@ -108,12 +109,32 @@ public class FirebaseDataBase {
         return childIDList;
     }
 
+    public List<ChildInfo> GetChild(final String parentID, String childID) {
+        DatabaseReference parent = rootRef.child(parentID).child(childID);
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        childInfoList.add(ds.getValue(ChildInfo.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        };
+        parent.addListenerForSingleValueEvent(valueEventListener);
+        return childInfoList;
+    }
+
     public String GetParentNumber(String parentId) {
 
         rootRef.child(parentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               phone = dataSnapshot.getValue(ParentInfo.class).getParentNumber();
+                phone = dataSnapshot.getValue(ParentInfo.class).getParentNumber();
             }
 
             @Override
