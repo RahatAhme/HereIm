@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +33,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.soft_sketch.hereim.POJO.ChildInfo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,15 +50,23 @@ import java.util.List;
  */
 public class ParentMap extends Fragment implements OnMapReadyCallback {
 
-    private FirebaseDataBase dataBase;
-    private FirebaseAuthOperation authOperation;
-    private List<String> idlit;
+    private List<String> childIDlist;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference rootRef = database.getReference();
+
+    private String parentid = "";
+    private String locationName = "";
+
+    private Geocoder geocoder;
+    private List<Address> addresses;
+    private ChildInfo childInfo;
 
     private static final int LOCATION_REQUEST_CODE = 111;
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 11;
     int PLACE_PICKER_REQUEST = 1;
 
-    GoogleMap map;
+    private GoogleMap map;
 
     public ParentMap() {
         // Required empty public constructor
@@ -59,8 +77,27 @@ public class ParentMap extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_parent_map, container, false);
+        final View view = inflater.inflate(R.layout.fragment_parent_map, container, false);
         ((ParentActivity) getActivity()).setTitle("Child Current Location");
+
+
+        parentid = getArguments().getString("parentIDpasser");
+
+        childInfo = new ChildInfo();
+        addresses = new ArrayList<>();
+        geocoder = new Geocoder(getContext());
+
+        rootRef.child(parentid).child("5257f44").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                childInfo = dataSnapshot.getValue(ChildInfo.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -69,7 +106,7 @@ public class ParentMap extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.childMap_id);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.parentMap_id);
         mapFragment.getMapAsync(this);
     }
 
@@ -77,22 +114,23 @@ public class ParentMap extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-       /* LatLng latLng = new LatLng(23.7396041,90.380544);
+        LatLng latLng = new LatLng(childInfo.getCurrentLocLati(), childInfo.getCurrentLocLong());
         MarkerOptions options = new MarkerOptions();
-        options.position(latLng).title("Dhaka City College");
-        map.addMarker(options);*/
         UiSettings uiSettings = map.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
-        if (checkLocationPermission()){
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14f));
+
+        if (checkLocationPermission()) {
             map.setMyLocationEnabled(true);
+            options.position(latLng);
+            map.addMarker(options);
         }
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14f));
     }
 
 
-    public boolean checkLocationPermission(){
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
+    public boolean checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_REQUEST_CODE);
@@ -100,5 +138,18 @@ public class ParentMap extends Fragment implements OnMapReadyCallback {
         }
         return true;
     }
+
+    public String getAddressName(double currentlet, double currentlog) {
+        String location = "";
+        try {
+            addresses = geocoder.getFromLocation(currentlet, currentlog, 1);
+            Address currentAddress = addresses.get(0);
+            location = currentAddress.getAddressLine(0);
+        } catch (IOException e) {
+            Toast.makeText(getContext(), e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return location;
+    }
+
 
 }

@@ -41,17 +41,40 @@ public class ChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
 
+        String temp1 = getIntent().getStringExtra("data");
+
         authOperation = new FirebaseAuthOperation(this);
         db = new FirebaseDataBase(this);
+        bundle = new Bundle();
 
         preferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         editor = preferences.edit();
 
+        if (temp1 != null && temp1.equals("perform")) {
+
+            String childName = preferences.getString("ChildName", "Error");
+            String childPhone = preferences.getString("ChildPhone", "Error");
+            temp = preferences.getString("ParentID", "Error");
+
+            DatabaseReference parentID = FirebaseDatabase.getInstance().getReference(temp);
+            childID = authOperation.GetToken();
+
+            db.ChildSave(childID, childName, childPhone, parentID);
+
+            editor.putString("parentID", temp);
+            editor.putString("childID", childID);
+            editor.apply();
+        }
+
         manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         Child_Current_Loc child_current_loc = new Child_Current_Loc();
+        bundle.putString("pidforloc", preferences.getString("parentID", "Error"));
+        bundle.putString("cidforloc", preferences.getString("parentID", "Error"));
+        child_current_loc.setArguments(bundle);
         ft.add(R.id.FragmentHolder_3_id, child_current_loc);
         ft.commit();
+
 
         BottomNavigationView bottomNav = findViewById(R.id.child_bottom_navigation_id);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,12 +83,13 @@ public class ChildActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
 
                 try {
-                    bundle = new Bundle();
 
                     switch (menuItem.getItemId()) {
 
                         case R.id.nav_loc:
                             selectedFragment = new Child_Current_Loc();
+                            bundle.putString("idForCall", preferences.getString("parentID", "Error"));
+                            selectedFragment.setArguments(bundle);
                             menuItem.getIcon().setBounds(20, 20, 20, 20);
                             break;
                         case R.id.nav_calling:
@@ -95,22 +119,8 @@ public class ChildActivity extends AppCompatActivity {
             }
         });
 
-        String temp1 = getIntent().getStringExtra("data");
 
-        if (temp1 != null && temp1.equals("perform")) {
 
-            String childName = preferences.getString("ChildName", "Error");
-            String childPhone = preferences.getString("ChildPhone", "Error");
-            temp = preferences.getString("ParentID", "Error");
-
-            DatabaseReference parentID = FirebaseDatabase.getInstance().getReference(temp);
-            childID = authOperation.GetToken();
-
-            db.ChildSave(childID, childName, childPhone, parentID);
-
-            editor.putString("parentID", temp);
-            editor.apply();
-        }
     }
 
     @Override

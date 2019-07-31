@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,7 @@ public class FirebaseDataBase {
 
     private List<String> childIDList = new ArrayList<>();
     private List<ChildInfo> childInfoList = new ArrayList<>();
+    private ParentActivity parentActivity = new ParentActivity();
     private String phone;
 
     private Context context;
@@ -87,47 +89,6 @@ public class FirebaseDataBase {
         return dataSavingStatus;
     }
 
-    public List<String> GetChildID(final String parentID) {
-        DatabaseReference parent = rootRef.child(parentID);
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String temp = ds.getKey();
-                    assert temp != null;
-                    if (!temp.equals("parentID") && !temp.equals("parentName") && !temp.equals("parentNumber")) {
-                        Log.e("child", temp);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        parent.addListenerForSingleValueEvent(valueEventListener);
-        return childIDList;
-    }
-
-    public List<ChildInfo> GetChild(final String parentID, String childID) {
-        DatabaseReference parent = rootRef.child(parentID).child(childID);
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        childInfoList.add(ds.getValue(ChildInfo.class));
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        parent.addListenerForSingleValueEvent(valueEventListener);
-        return childInfoList;
-    }
 
     public String GetParentNumber(String parentId) {
 
@@ -162,6 +123,32 @@ public class FirebaseDataBase {
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
+    public void UpdateLocation(String parentID, String chiildID, double lat, double Long) {
+
+        DatabaseReference updateloc = rootRef.child(parentID).child(chiildID);
+        Map<String, Object> locUpdate = new HashMap<>();
+        locUpdate.put("currentLocLati", lat);
+        locUpdate.put("currentLocLong", Long);
+
+        updateloc.updateChildren(locUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public List<String> getChildIDList(final String parentID) {
+
+        return childIDList;
+    }
+
+
 }

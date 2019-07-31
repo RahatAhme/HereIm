@@ -52,13 +52,13 @@ public class WellComeScreen extends Fragment {
             public void run() {
                 try {
                     Thread.sleep(1000);
-                   if (logStatus && user.equals("Parent")){
-                       screenIntf.ParentLogedIn();
-                   }else if (logStatus && user.equals("Child")){
-                       screenIntf.ChildLogedIn();
-                   }else {
-                       screenIntf.OnTimeOut();
-                   }
+                    if (logStatus && user.equals("Parent")){
+                        screenIntf.ParentLogedIn();
+                    }else if (logStatus && user.equals("Child")){
+                        screenIntf.ChildLogedIn();
+                    }else {
+                        screenIntf.OnTimeOut();
+                    }
 
                 } catch (InterruptedException e) {
                     Log.e("Wellcome",e.getLocalizedMessage());

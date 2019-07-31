@@ -163,5 +163,6 @@ public class FirebaseAuthOperation {
 
     public void LogOut(){
         auth.signOut();
+        //fragment transation
     }
 }

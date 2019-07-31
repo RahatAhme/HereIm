@@ -31,4 +31,8 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="title_activity_maps">Map</string>
+    <string name="switch_child">Switch Child</string>
+    <string name="which_child_want_to_monitor">Which Child want to monitor</string>
+    <string name="nochildtitle">You have not added any child yet.\n
+        Please add at least one child with your user id:</string>
 </resources>
